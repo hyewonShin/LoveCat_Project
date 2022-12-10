@@ -45,4 +45,7 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+const MongoCon = require("./middlewares/mongoose");
+MongoCon();
+
 module.exports = app;
