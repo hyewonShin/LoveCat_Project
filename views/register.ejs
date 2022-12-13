@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">  
+    <title>회원가입 화면</title>
+</head>
+
+<body>
+  <h2>회원가입화면입니다 ⭐</h2>
+  <input type="text" placeholder="아이디" id="id" /></br>
+  <input type="password" placeholder="비밀번호" id="password" /></br>
+  <input type="password" placeholder="비밀번호확인" id="passwordCheck" /></br>
+  <button type="button" onclick="SignUpCheck()">회원가입</button>
+  <button type="button" onclick="location.href = '/user/login'">취소</button>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+       if (localStorage.getItem("token")) {
+           alert("이미 로그인이 되어있습니다.")
+           window.location.replace("/user/main");
+        } 
+    });
+
+    function SignUpCheck() {
+    const id = $("#id").val();
+    $.ajax({
+      type: "POST",
+      url: "/user/idCheck",
+      data: {id},
+      success: function (response) {
+        console.log("response", response)
+        if(response.success === false){
+          alert(response.message)
+        }else{
+          SignUp();
+        }
+      },
+      error: function (error) {
+        alert("이미 가입된 회원입니다.");
+        },
+    });
+  }
+
+  function SignUp() {
+    const id = $("#id").val();
+    const pw = $("#password").val();
+    $.ajax({
+      type: "POST",
+      url: "/user/register",
+      data: { id, pw },
+      success: function (response) {
+        alert("회원가입에 성공하였습니다!")
+        location.href = "/"
+      },
+      error: function (error) {
+        alert("회원가입 에러발생.");
+        },
+    });
+  }
+
+</script>
+</body>
+</html>
