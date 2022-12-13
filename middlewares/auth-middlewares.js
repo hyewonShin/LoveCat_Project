@@ -5,7 +5,7 @@ require("dotenv").config();
 const CreateToken = (id) => {
   return new Promise(async (resolve, reject) => {
     console.log("CreateToken() 진입 >>");
-    let sql = `select nickname, email from user where id = "${id}"`;
+    let sql = `SELECT nickname, email FROM user WHERE id = "${id}"`;
     let row = await MariaQuery(sql);
     let nickname = row[0].nickname;
     let email = row[0].email;

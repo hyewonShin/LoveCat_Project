@@ -3,7 +3,7 @@ const MariaQuery = require("../../middlewares/mariaModule");
 const IdCheck = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("idCheck() 진입", id);
+      console.log("idCheck() 진입");
       let sql = `SELECT * FROM user WHERE id = "${id}"`;
       let existUsers = await MariaQuery(sql);
 
@@ -40,8 +40,7 @@ const SignUp = (result) => {
 const SignIn = (id, pw) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("id,pw >> ", id, pw);
-
+      console.log("SignIn() 진입");
       let sql = `SELECT id, hashpw FROM user WHERE id = "${id}"`;
       let row = await MariaQuery(sql);
 
