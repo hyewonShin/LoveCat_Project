@@ -28,12 +28,16 @@ const CreateToken = (id) => {
       }
     );
     // RefreshToken 발급
-    let Refreshtoken = jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
+    let RefreshToken = jwt.sign({}, process.env.JWT_REFRESH_SECRET, {
       algorithm: "HS256",
-      expiresIn: "36h",
+      expiresIn: "14d",
       issuer: "토큰 발급자",
     });
-    resolve({ token, Refreshtoken });
+
+    let sql1 = `UPDATE user SET refresh_token = '${RefreshToken}' WHERE id = '${id}'`;
+    await MariaQuery(sql1);
+
+    resolve({ token, RefreshToken });
   });
 };
 

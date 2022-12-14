@@ -50,6 +50,13 @@ const SignIn = (id, pw) => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log("SignIn() 진입");
+      // accessToken, RefreshToken 검증
+      // accessToken 유효, RefreshToken 유효 => 로그인유지
+      // accessToken 만료, RefreshToken 유효 => Refresh 검증 후, accessToken 재발급
+      // accessToken 유효, RefreshToken 만료 => access 검증 후, RefreshToken 재발급
+      // accessToken 만료, RefreshToken 만료 => 재로그인
+      // 로그아웃 시 => 두개 토큰 모두 만료시킴.
+
       let sql = `SELECT id, hashpw FROM user WHERE id = "${id}"`;
       let row = await MariaQuery(sql);
 
