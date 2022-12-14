@@ -29,10 +29,13 @@
 
     function SignUpCheck() {
     const id = $("#id").val();
+    const pw = $("#password").val();
+    const pwCheck = $("#passwordCheck").val();
+    console.log("체크 >>", id, pw, pwCheck)
     $.ajax({
       type: "POST",
       url: "/user/idCheck",
-      data: {id},
+      data: {id, pw, pwCheck},
       success: function (response) {
         console.log("response", response)
         if(response.success === false){
@@ -42,7 +45,7 @@
         }
       },
       error: function (error) {
-        alert("이미 가입된 회원입니다.");
+        alert("회원 아이디 체크 에러발생.");
         },
     });
   }

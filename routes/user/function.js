@@ -1,16 +1,25 @@
 const MariaQuery = require("../../middlewares/mariaModule");
 
-const IdCheck = (id) => {
+const IdCheck = (id, pw, pwCheck) => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log("idCheck() 진입");
-      let sql = `SELECT * FROM user WHERE id = "${id}"`;
-      let existUsers = await MariaQuery(sql);
+      console.log("IdCheck 체크 >>", id, pw, pwCheck);
 
-      if (existUsers.length < 1) {
-        resolve({ success: true });
+      if (pw !== pwCheck) {
+        resolve({
+          success: false,
+          message: "비밀번호가 일치하지 않습니다.",
+        });
       } else {
-        resolve({ success: false, message: "이미 등록된 아이디입니다." });
+        let sql = `SELECT * FROM user WHERE id = "${id}"`;
+        let existUsers = await MariaQuery(sql);
+
+        if (existUsers.length < 1) {
+          resolve({ success: true });
+        } else {
+          resolve({ success: false, message: "이미 등록된 아이디입니다." });
+        }
       }
     } catch (error) {
       console.log("IdCheck 함수 에러", error);
