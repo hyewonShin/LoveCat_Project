@@ -10,31 +10,30 @@ const CreateToken = (id) => {
     let nickname = row[0].nickname;
     let email = row[0].email;
 
+    // AccessToken 발급
     const payload = {
       id,
       nickname,
       email,
     };
-    console.log("process.env.JWT_ACCESS_SECRET", process.env.JWT_ACCESS_SECRET);
-    jwt.sign(
+    let token = jwt.sign(
       {
         payload,
       },
       process.env.JWT_ACCESS_SECRET,
       {
         algorithm: "HS256",
-        expiresIn: "10h",
+        expiresIn: "3h",
         issuer: "토큰 발급자",
-      },
-      (err, token) => {
-        if (err) {
-          reject({ status: 400, message: "토큰 발급 실패 서버 오류" });
-        } else {
-          console.log(`access token 발급 완료 ${token}`);
-          resolve(token);
-        }
       }
     );
+    // RefreshToken 발급
+    let Refreshtoken = jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
+      algorithm: "HS256",
+      expiresIn: "36h",
+      issuer: "토큰 발급자",
+    });
+    resolve({ token, Refreshtoken });
   });
 };
 
