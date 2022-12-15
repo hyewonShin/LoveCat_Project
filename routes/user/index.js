@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { IdCheck, SignUp, SignIn } = require("./function");
-const { CreateToken } = require("../../middlewares/auth-middlewares");
+const {
+  CreateToken,
+  VerifyToken,
+} = require("../../middlewares/auth-middlewares");
 const { PasswordHashing, CheckingPassword } = require("../../functions/bcrypt");
 const { validator } = require("../../middlewares/validation");
 
@@ -58,6 +61,7 @@ router.post("/login", function (req, res, next) {
             res.json({ success: false, message: result.message });
           } else {
             CreateToken(id).then((token) => {
+              console.log("token >>> ", token);
               res.send({ token });
             });
           }
@@ -67,6 +71,10 @@ router.post("/login", function (req, res, next) {
     .catch((error) =>
       res.status(error).json({ success: false, message: error })
     );
+});
+
+router.get("/verify", VerifyToken, function (req, res, next) {
+  console.log("검증테스트 완료!");
 });
 
 module.exports = router;
