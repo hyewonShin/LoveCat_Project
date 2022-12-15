@@ -58,7 +58,6 @@ const VerifyToken = async (req, res, next) => {
     console.log(token);
     req.decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
     console.log("req.decoded >", req.decoded);
-
     return next();
   } catch (error) {
     console.log("error > ", error);

@@ -3,8 +3,7 @@ const MariaQuery = require("../../middlewares/mariaModule");
 const IdCheck = (id, pw, pwCheck) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("idCheck() 진입");
-      console.log("IdCheck 체크 >>", id, pw, pwCheck);
+      console.log("IdCheck() 진입 >>", id, pw, pwCheck);
 
       if (pw !== pwCheck) {
         resolve({

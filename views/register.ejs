@@ -45,7 +45,7 @@
         }
       },
       error: function (error) {
-        alert("회원 아이디 체크 에러발생.");
+        alert(error.responseJSON.message);
         },
     });
   }

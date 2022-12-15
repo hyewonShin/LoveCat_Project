@@ -6,7 +6,7 @@ const {
   VerifyToken,
 } = require("../../middlewares/auth-middlewares");
 const { PasswordHashing, CheckingPassword } = require("../../functions/bcrypt");
-const { validator } = require("../../middlewares/validation");
+const { UserValidation, validate } = require("../../middlewares/validation");
 
 router.get("/register", (req, res) => {
   res.render("register");
@@ -17,7 +17,7 @@ router.get("/login", (req, res) => {
 });
 
 //회원가입 중복검사
-router.post("/idCheck", async (req, res, next) => {
+router.post("/idCheck", UserValidation, validate, async (req, res, next) => {
   console.log("/idCheck 진입 >> ");
 
   const { id, pw, pwCheck } = req.body;
