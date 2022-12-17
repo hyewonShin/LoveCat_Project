@@ -14,6 +14,7 @@
   <input type="password" placeholder="비밀번호" id="pw" /></br>
   <button type="button" onclick="LoginIdCheck();">로그인</button>
   <button type="button" onclick="VerifyToken();">토큰검증</button>
+  <button type="button" onclick="SelectUser();">유저검색</button>
   <button type="button" onClick="location.href='/user/register'">회원가입</button>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
@@ -58,12 +59,34 @@
       url: "/user/verify",
       headers: {
         authorization: `Bearer ${localStorage.getItem('Token')}`,
+        RefreshToken : `${localStorage.getItem('RefreshToken')}`
         },
       success: function (response) {
         alert("토큰검증 완료")
       },
       error: function (error) {
        alert("VerifyToken 에러");
+      },
+    });
+  }
+
+
+  function SelectUser() {
+    $.ajax({
+      type: "GET",
+      url: "/board/select",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('Token')}`,
+        RefreshToken : `${localStorage.getItem('RefreshToken')}`
+        },
+      success: function (response) {
+        console.log("response >>>", response)
+        localStorage.setItem("Token", response.token)
+        localStorage.setItem("RefreshToken", response.RefreshToken)
+        alert("토큰검증 완료")
+      },
+      error: function (error) {
+        console.log("SelectUser의 error ~~!!   ", error)
       },
     });
   }

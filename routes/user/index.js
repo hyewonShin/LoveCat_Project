@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { IdCheck, SignUp, SignIn } = require("./function");
 const {
-  CreateToken,
   VerifyToken,
+  CreateAccessToken,
+  LoginCreateRefreshToken,
 } = require("../../middlewares/auth-middlewares");
 const { PasswordHashing, CheckingPassword } = require("../../functions/bcrypt");
 const { UserValidation, validate } = require("../../middlewares/validation");
@@ -60,10 +61,12 @@ router.post("/login", function (req, res, next) {
           if (result.success === false) {
             res.json({ success: false, message: result.message });
           } else {
-            CreateToken(id).then((token) => {
-              console.log("token >>> ", token);
-              res.send({ token });
-            });
+            CreateAccessToken(id)
+              .then((result) => LoginCreateRefreshToken(result))
+              .then((token) => {
+                console.log("token >>> ", token);
+                res.send({ token });
+              });
           }
         });
       }
