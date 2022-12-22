@@ -113,7 +113,9 @@ const DeleteBoard = (board_num) => {
       console.log("DeleteBoard() 진입 >>> ");
       data = [board_num];
 
-      let sql = `UPDATE board SET delete_flag = 1 WHERE board_num = ?`;
+      let sql = `UPDATE board 
+                  SET delete_flag = 1 
+                 WHERE board_num = ?`;
 
       await MariaQuery(sql, data);
       resolve();

@@ -24,7 +24,6 @@ router.get("/", async (req, res, next) => {
 // 특정 카테고리 글 조회
 router.get("/:category", async (req, res, next) => {
   console.log("특정 카테고리 글 조회 API 진입 >> ");
-  console.log("category >> ", req.params.category);
 
   SelectCategory(req.params.category)
     .then((result) => {
@@ -38,11 +37,8 @@ router.get("/:category", async (req, res, next) => {
 // 특정 카테고리 글 상세조회
 router.get("/:category/:board_num", async (req, res, next) => {
   console.log("특정 카테고리 글 상세조회 API 진입 >> ");
-  console.log("category >> ", req.params.category);
   let category = req.params.category;
-  console.log("board_num >> ", req.params.board_num);
   let board_num = req.params.board_num;
-  console.log("!!board_num >> ", board_num);
 
   SelectBoard(category, board_num)
     .then((result) => {
