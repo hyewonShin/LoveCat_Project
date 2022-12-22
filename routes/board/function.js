@@ -70,7 +70,7 @@ const InsertBoard = (body) => {
       const { title, content, category, writer } = body;
       let data = [title, content, category, writer];
 
-      let sql = `INSET INTO board 
+      let sql = `INSERT INTO board 
                   (title, content, category, writer) 
                  VALUES (?,?,?,?)`;
 
@@ -94,7 +94,8 @@ const UpdateBoard = (body) => {
       let sql = `UPDATE board 
                   SET title = ?, 
                   content = ?, 
-                  category = ? 
+                  category = ?,
+                  modify_date = sysdate()
                  WHERE board_num = ?`;
 
       await MariaQuery(sql, data);
