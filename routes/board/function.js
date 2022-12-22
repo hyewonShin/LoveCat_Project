@@ -1,10 +1,14 @@
 const MariaQuery = require("../../middlewares/mariaModule");
 
+// 전체글 조회
 const SelectAll = () => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log("SelectAll() 진입 >>> ");
-      let sql = `select * from board`;
+
+      let sql = `SELECT * FROM board 
+                  WHERE delete_flag = 0`;
+
       let rows = await MariaQuery(sql);
       console.log("rows", rows);
       resolve(rows);
@@ -15,13 +19,18 @@ const SelectAll = () => {
   });
 };
 
+// 특정 카테고리 글 조회
 const SelectCategory = (category) => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log("SelectCategory() 진입 >>> ");
-      console.log("category >>> ", category);
-      let sql = `select * from board where category_num = "${category}"`;
-      let rows = await MariaQuery(sql);
+      let data = [category];
+
+      let sql = `SELECT * FROM board 
+                  WHERE category = ? 
+                 AND delete_flag = 0`;
+
+      let rows = await MariaQuery(sql, data);
       console.log("rows", rows);
       resolve(rows);
     } catch (error) {
@@ -31,14 +40,19 @@ const SelectCategory = (category) => {
   });
 };
 
+// 특정 카테고리 글 상세조회
 const SelectBoard = (category, board_num) => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log("SelectBoard() 진입 >>> ");
-      console.log("category >>> ", category);
-      console.log("board_num >>> ", board_num);
-      let sql = `select * from board where category_num = "${category}" and board_num = ${board_num}`;
-      let rows = await MariaQuery(sql);
+      let data = [category, board_num];
+
+      let sql = `SELECT * FROM board 
+                  WHERE category = ? 
+                 AND board_num = ? 
+                 AND delete_flag = 0`;
+
+      let rows = await MariaQuery(sql, data);
       console.log("rows", rows);
       resolve(rows);
     } catch (error) {
@@ -48,8 +62,73 @@ const SelectBoard = (category, board_num) => {
   });
 };
 
+// 게시글 작성
+const InsertBoard = (body) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("InsertBoard() 진입 >>> ", body);
+      const { title, content, category, writer } = body;
+      let data = [title, content, category, writer];
+
+      let sql = `INSET INTO board 
+                  (title, content, category, writer) 
+                 VALUES (?,?,?,?)`;
+
+      await MariaQuery(sql, data);
+      resolve();
+    } catch (error) {
+      console.log("InsertBoard 함수 에러", error);
+      reject("InsertBoard() 에러");
+    }
+  });
+};
+
+// 게시글 수정
+const UpdateBoard = (body) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("UpdateBoard() 진입 >>> ");
+      const { title, content, category, board_num } = body;
+      let data = [title, content, category, board_num];
+
+      let sql = `UPDATE board 
+                  SET title = ?, 
+                  content = ?, 
+                  category = ? 
+                 WHERE board_num = ?`;
+
+      await MariaQuery(sql, data);
+      resolve();
+    } catch (error) {
+      console.log("SelectBoard 함수 에러", error);
+      reject("SelectBoard() 에러");
+    }
+  });
+};
+
+// 게시글 삭제
+const DeleteBoard = (board_num) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("DeleteBoard() 진입 >>> ");
+      data = [board_num];
+
+      let sql = `UPDATE board SET delete_flag = 1 WHERE board_num = ?`;
+
+      await MariaQuery(sql, data);
+      resolve();
+    } catch (error) {
+      console.log("DeleteBoard 함수 에러", error);
+      reject("DeleteBoard() 에러");
+    }
+  });
+};
+
 module.exports = {
   SelectAll,
-  SelectBoard,
   SelectCategory,
+  SelectBoard,
+  InsertBoard,
+  UpdateBoard,
+  DeleteBoard,
 };
