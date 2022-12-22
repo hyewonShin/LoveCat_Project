@@ -8,6 +8,7 @@ const {
   InsertBoard,
   UpdateBoard,
   DeleteBoard,
+  ViewCount,
 } = require("./function");
 
 // 전체글 조회
@@ -40,7 +41,8 @@ router.get("/:category/:board_num", async (req, res, next) => {
   let category = req.params.category;
   let board_num = req.params.board_num;
 
-  SelectBoard(category, board_num)
+  ViewCount(board_num)
+    .then(() => SelectBoard(category, board_num))
     .then((result) => {
       res.status(200).json({ success: true, list: result });
     })

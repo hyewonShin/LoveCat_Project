@@ -62,6 +62,29 @@ const SelectBoard = (category, board_num) => {
   });
 };
 
+// 게시글 조회수 카운트
+const ViewCount = (board_num) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("ViewCount() 진입 >>> ");
+      // user_num : 우선 더미데이터 사용
+      let user_num = 1;
+      let data = [user_num, board_num];
+
+      let sql = `UPDATE board SET 
+                  view_cnt = view_cnt+1 
+                 WHERE board_num = ${board_num}`;
+
+      let rows = await MariaQuery(sql, data);
+      console.log("rows", rows);
+      resolve(rows);
+    } catch (error) {
+      console.log("ViewCount 함수 에러", error);
+      reject("ViewCount() 에러");
+    }
+  });
+};
+
 // 게시글 작성
 const InsertBoard = (body) => {
   return new Promise(async (resolve, reject) => {
@@ -131,6 +154,7 @@ module.exports = {
   SelectAll,
   SelectCategory,
   SelectBoard,
+  ViewCount,
   InsertBoard,
   UpdateBoard,
   DeleteBoard,
