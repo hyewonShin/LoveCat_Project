@@ -95,8 +95,9 @@ const VerifyToken = (req, res, next) => {
       console.log("req.headers.RefreshToken >>> ", req.headers.refreshtoken);
 
       // 헤더에서 토큰이 아에 넘어오지 않았을 때 // ok
+      // 프론트에서 401 받으면 로그인페이지로 이동하도록 하기.
       if (req.headers.authorization === undefined)
-        throw Error("권한이 없는 사용자입니다.");
+        res.json({ statuscode: 401, message: "접근 권한이 없습니다." });
 
       // access토큰 bearer 제거
       let token = req.headers.authorization;
