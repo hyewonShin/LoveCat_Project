@@ -9,6 +9,7 @@ const {
   UpdateBoard,
   DeleteBoard,
   ViewCount,
+  SecretBoard,
 } = require("./function");
 
 // 전체글 조회
@@ -82,6 +83,19 @@ router.patch("/delete", async (req, res, next) => {
   console.log("게시글삭제API 진입 >> ", req.body);
 
   DeleteBoard(req.body.board_num)
+    .then((result) => {
+      res.status(200).json({ success: true, list: result });
+    })
+    .catch((error) =>
+      res.status(error).json({ success: false, message: error })
+    );
+});
+
+// 비밀글 설정
+router.patch("/secret", async (req, res, next) => {
+  console.log("비밀글설정API 진입 >> ", req.body);
+
+  SecretBoard(req.body.board_num)
     .then((result) => {
       res.status(200).json({ success: true, list: result });
     })

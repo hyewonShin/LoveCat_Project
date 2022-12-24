@@ -150,6 +150,26 @@ const DeleteBoard = (board_num) => {
   });
 };
 
+// 비밀글 플래그
+const SecretBoard = (board_num) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("SecretBoard() 진입 >>> ");
+      data = [board_num];
+
+      let sql = `UPDATE board 
+                  SET secret_flag = 1 
+                 WHERE board_num = ?`;
+
+      await MariaQuery(sql, data);
+      resolve();
+    } catch (error) {
+      console.log("SecretBoard 함수 에러", error);
+      reject("SecretBoard() 에러");
+    }
+  });
+};
+
 module.exports = {
   SelectAll,
   SelectCategory,
@@ -158,4 +178,5 @@ module.exports = {
   InsertBoard,
   UpdateBoard,
   DeleteBoard,
+  SecretBoard,
 };
