@@ -170,6 +170,26 @@ const SecretBoard = (board_num) => {
   });
 };
 
+// 공지 플래그
+const NoticeBoard = (board_num) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("NoticeBoard() 진입 >>> ");
+      data = [board_num];
+
+      let sql = `UPDATE board 
+                  SET notice_flag = 1 
+                 WHERE board_num = ?`;
+
+      await MariaQuery(sql, data);
+      resolve();
+    } catch (error) {
+      console.log("NoticeBoard 함수 에러", error);
+      reject("NoticeBoard() 에러");
+    }
+  });
+};
+
 module.exports = {
   SelectAll,
   SelectCategory,
@@ -179,4 +199,5 @@ module.exports = {
   UpdateBoard,
   DeleteBoard,
   SecretBoard,
+  NoticeBoard,
 };
