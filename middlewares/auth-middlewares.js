@@ -88,6 +88,21 @@ const LoginCreateRefreshToken = (result) => {
   });
 };
 
+const GetNickName = (header) => {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log("CheckNickName함수 진입");
+      let decode = jwtdecode(header);
+      console.log("decode", decode);
+      let nickname = decode.payload.nickname;
+      console.log("nickname", nickname);
+      resolve(nickname);
+    } catch {
+      return reject("CheckNickName함수 오류발생");
+    }
+  });
+};
+
 const VerifyToken = (req, res, next) => {
   try {
     return new Promise(async (resolve, reject) => {
@@ -156,4 +171,5 @@ module.exports = {
   CreateAccessToken,
   CreateRefreshToken,
   LoginCreateRefreshToken,
+  GetNickName,
 };
