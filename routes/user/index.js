@@ -18,7 +18,7 @@ router.get("/login", (req, res) => {
 });
 
 //회원가입 중복검사
-router.post("/idCheck", UserValidation, validate, async (req, res, next) => {
+router.post("/idCheck", async (req, res, next) => {
   console.log("/idCheck 진입 >> ");
 
   const { id, pw, pwCheck } = req.body;
@@ -39,9 +39,9 @@ router.post("/idCheck", UserValidation, validate, async (req, res, next) => {
 //회원가입
 router.post("/register", function (req, res, next) {
   console.log("/register 진입 >> ");
-  const { id, pw } = req.body;
+  const { id, pw, nickname, email, phone } = req.body;
   PasswordHashing(pw)
-    .then((hashpw) => SignUp({ id, hashpw }))
+    .then((hashpw) => SignUp({ id, hashpw, nickname, email, phone }))
     .then((result) => res.json({ success: true, list: result }))
     .catch((error) =>
       res.status(error).json({ success: false, message: error })

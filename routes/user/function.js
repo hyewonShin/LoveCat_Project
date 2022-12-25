@@ -33,9 +33,12 @@ const SignUp = (result) => {
       console.log("SignUp() 진입");
       let id = result.id;
       let hashpw = result.hashpw;
+      let nickname = result.nickname;
+      let email = result.email;
+      let phone = result.phone;
 
-      let data = [id, hashpw];
-      let sql = `INSERT INTO user (id, hashpw) VALUES (?,?)`;
+      let data = [id, hashpw, nickname, email, phone];
+      let sql = `INSERT INTO user (id, hashpw, nickname, email, phone, grade) VALUES (?,?,?,?,?,0)`;
       await MariaQuery(sql, data);
       resolve();
     } catch (error) {
