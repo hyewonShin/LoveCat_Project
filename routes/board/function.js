@@ -86,15 +86,16 @@ const ViewCount = (board_num) => {
 };
 
 // 게시글 작성
-const InsertBoard = (body) => {
+const InsertBoard = (result) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("InsertBoard() 진입 >>> ", body);
-      const { title, content, category, writer } = body;
-      let data = [title, content, category, writer];
+      console.log("InsertBoard() 진입 >>> ", result);
+      let nickname = result[0];
+      const { title, content, category } = result[1];
+      let data = [title, content, category, nickname];
 
-      let sql = `INSERT INTO board 
-                  (title, content, category, writer) 
+      let sql = `INSERT INTO board
+                  (title, content, category, writer)
                  VALUES (?,?,?,?)`;
 
       await MariaQuery(sql, data);

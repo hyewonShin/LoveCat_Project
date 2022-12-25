@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { VerifyToken } = require("../../middlewares/auth-middlewares");
+const {
+  VerifyToken,
+  GetNickName,
+} = require("../../middlewares/auth-middlewares");
 const {
   SelectAll,
   SelectCategory,
@@ -54,10 +57,11 @@ router.get("/:category/:board_num", async (req, res, next) => {
 });
 
 // 게시글 작성
-router.post("/", async (req, res, next) => {
+router.post("/", VerifyToken, async (req, res, next) => {
   console.log("글작성API 진입 >> ", req.body);
 
-  InsertBoard(req.body)
+  GetNickName(req.headers.authorization)
+    .then((result) => InsertBoard([result, req.body]))
     .then((result) => {
       res.status(200).json({ success: true, list: result });
     })
