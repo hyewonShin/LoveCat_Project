@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   VerifyToken,
   GetNickName,
+  CheckAdmin,
 } = require("../../middlewares/auth-middlewares");
 const {
   SelectAll,
@@ -84,7 +85,7 @@ router.patch("/", async (req, res, next) => {
 });
 
 // 게시글 삭제
-router.patch("/delete", async (req, res, next) => {
+router.patch("/delete", CheckAdmin, async (req, res, next) => {
   console.log("게시글삭제API 진입 >> ", req.body);
 
   DeleteBoard(req.body.board_num)
