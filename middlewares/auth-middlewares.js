@@ -27,7 +27,7 @@ const CreateAccessToken = (id) => {
   return new Promise(async (resolve, reject) => {
     console.log("CreateToken() 진입 >>", id);
 
-    let sql = `SELECT nickname, email FROM user WHERE id = "${id}"`;
+    let sql = `SELECT nickname, email, grade FROM user WHERE id = "${id}"`;
     let row = await MariaQuery(sql);
     let nickname = row[0].nickname;
     let email = row[0].email;
@@ -35,6 +35,7 @@ const CreateAccessToken = (id) => {
     const payload = {
       nickname,
       email,
+      grade,
     };
     let token = jwt.sign(
       {
