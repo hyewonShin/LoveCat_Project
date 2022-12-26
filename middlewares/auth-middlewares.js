@@ -31,6 +31,7 @@ const CreateAccessToken = (id) => {
     let row = await MariaQuery(sql);
     let nickname = row[0].nickname;
     let email = row[0].email;
+    let grade = row[0].grade;
 
     const payload = {
       nickname,
@@ -104,6 +105,25 @@ const GetNickName = (header) => {
   });
 };
 
+const CheckAdmin = (req, res, next) => {
+  try {
+    console.log("관리자권한 확인");
+    let decode = jwtdecode(req.headers.authorization);
+    let grade = decode.payload.grade;
+    if (grade > 0) {
+      next();
+    } else {
+      return res
+        .status(403)
+        .json({ success: false, message: "잘못된 접근입니다." });
+    }
+  } catch (error) {
+    return res
+      .status(403)
+      .json("오류가 발생했습니다. 다시 로그인하거나 개발팀 문의 바랍니다.");
+  }
+};
+
 const VerifyToken = (req, res, next) => {
   try {
     return new Promise(async (resolve, reject) => {
@@ -173,4 +193,5 @@ module.exports = {
   CreateRefreshToken,
   LoginCreateRefreshToken,
   GetNickName,
+  CheckAdmin,
 };
