@@ -32,6 +32,25 @@ const BlackList = (result) => {
   });
 };
 
+// 블랙리스트 조회
+const SelectBlackList = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("SelectBlackList() 진입 >>> ");
+
+      let sql = `SELECT * FROM blacklist`;
+
+      let rows = await MariaQuery(sql);
+      console.log("rows", rows);
+      resolve(rows);
+    } catch (error) {
+      console.log("SelectAll 함수 에러", error);
+      reject("SelectAll() 에러");
+    }
+  });
+};
+
 module.exports = {
   BlackList,
+  SelectBlackList,
 };

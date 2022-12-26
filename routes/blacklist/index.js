@@ -4,7 +4,7 @@ const {
   VerifyToken,
   GetNickName,
 } = require("../../middlewares/auth-middlewares");
-const { BlackList } = require("./function");
+const { BlackList, SelectBlackList } = require("./function");
 
 // 신고기능
 router.post("/", async (req, res, next) => {
@@ -15,6 +15,19 @@ router.post("/", async (req, res, next) => {
     .then((result) =>
       res.json({ success: result.success, message: result.message })
     )
+    .catch((error) =>
+      res.status(error).json({ success: false, message: error })
+    );
+});
+
+// 신고된 게시물 조회
+router.get("/", async (req, res, next) => {
+  console.log("블랙리스트 조회 API 진입 >> ", req.body);
+
+  SelectBlackList()
+    .then((result) => {
+      res.status(200).json({ success: true, list: result });
+    })
     .catch((error) =>
       res.status(error).json({ success: false, message: error })
     );
