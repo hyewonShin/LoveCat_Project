@@ -1,16 +1,15 @@
 const MariaQuery = require("../../middlewares/mariaModule");
 
 // 좋아요 총합
-const Like = (body) => {
+const Like = (result) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("LikeSum() 진입 >>> ", body);
-      let board_num = body.board_num;
-      // user_num : 우선 더미데이터 사용
-      let user_num = 1;
+      console.log("LikeSum() 진입 >>> ", result);
+      let nickname = result[0];
+      const { board_num } = result[1];
 
       let sql = `SELECT * FROM like_user 
-                  WHERE user_num = ${user_num} 
+                  WHERE nickname = "${nickname}"
                  AND board_num = ${board_num}`;
       let row = await MariaQuery(sql);
 
@@ -20,7 +19,7 @@ const Like = (body) => {
                     like_sum = like_sum+1
                    WHERE board_num = ${board_num}`;
         await MariaQuery(sql);
-        InsertLikeUser({ user_num, board_num });
+        InsertLikeUser({ nickname, board_num });
         resolve();
       } else {
         console.log("이미 좋아요 했을 때 -1");
@@ -28,7 +27,7 @@ const Like = (body) => {
                     like_sum = like_sum-1
                    WHERE board_num = ${board_num}`;
         await MariaQuery(sql);
-        DeleteLikeUser({ user_num, board_num });
+        DeleteLikeUser({ nickname, board_num });
         resolve();
       }
     } catch (error) {
@@ -43,13 +42,13 @@ const DeleteLikeUser = (result) => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log("DeleteLikeUser() 진입 >>> ");
-      let user_num = result.user_num;
+      let nickname = result.nickname;
       let board_num = result.board_num;
-      let data = [user_num, board_num];
+      let data = [nickname, board_num];
 
       let sql = `DELETE FROM like_user 
-                  WHERE user_num = ${user_num} 
-                 AND board_num = ${board_num}`;
+                  WHERE nickname = ? 
+                 AND board_num = ?`;
 
       await MariaQuery(sql, data);
       resolve();
@@ -65,14 +64,14 @@ const InsertLikeUser = (result) => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log("LikeUser() 진입 >>> ");
-      let user_num = result.user_num;
+      let nickname = result.nickname;
       let board_num = result.board_num;
-      let data = [user_num, board_num];
+      let data = [nickname, board_num];
 
       let sql = `INSERT INTO like_user 
-                  (user_num, board_num)
+                  (nickname, board_num)
                  VALUES 
-                  (${user_num}, ${board_num})`;
+                  (?, ?)`;
 
       await MariaQuery(sql, data);
       resolve();
@@ -83,6 +82,23 @@ const InsertLikeUser = (result) => {
   });
 };
 
+// 내가 좋아요한 게시글 조회
+const SelectMyLike = (nickname) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("SelectMyLike() 진입 >>>");
+      let sql = `SELECT * FROM like_user WHERE nickname = "${nickname}"`;
+
+      let rows = await MariaQuery(sql);
+      resolve(rows);
+    } catch (error) {
+      console.log("SelectMyLike 함수 에러", error);
+      reject("SelectMyLike() 에러");
+    }
+  });
+};
+
 module.exports = {
   Like,
+  SelectMyLike,
 };
