@@ -10,6 +10,7 @@ var UserRouter = require("./routes/user/index");
 var BoarderRouter = require("./routes/board/index");
 var LikeRouter = require("./routes/like/index");
 var BlackListRouter = require("./routes/blacklist/index");
+var CommentRouter = require("./routes/comment/index");
 
 var app = express();
 const cors = require("cors");
@@ -36,6 +37,7 @@ app.use("/user", UserRouter);
 app.use("/board", BoarderRouter);
 app.use("/like", LikeRouter);
 app.use("/blacklist", BlackListRouter);
+app.use("/comment", CommentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
