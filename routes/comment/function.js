@@ -28,6 +28,31 @@ const SelectComment = (params) => {
   });
 };
 
+// 댓글 작성
+const InsertComment = (result) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("InsertComment() 진입 >>> ", result);
+      let nickname = result[0];
+      console.log("nick > ", nickname);
+      const { board_num, content, p_num, depth } = result[1];
+      console.log("result[1] > ", board_num, content, p_num, depth);
+      let data = [nickname, board_num, content, p_num, depth];
+
+      let sql = `INSERT INTO comment 
+                  (commenter, board_num, content, p_num, depth)
+                 VALUES (?,?,?,?,?)`;
+
+      await MariaQuery(sql, data);
+      resolve();
+    } catch (error) {
+      console.log("InsertComment 함수 에러", error);
+      reject("InsertComment() 에러");
+    }
+  });
+};
+
 module.exports = {
   SelectComment,
+  InsertComment,
 };
