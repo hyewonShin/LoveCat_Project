@@ -74,8 +74,25 @@ const UpdateComment = (body) => {
   });
 };
 
+// 댓글 삭제
+const DeleteComment = (comment_num) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("DeleteBoard() 진입 >>> ");
+      let sql = `DELETE FROM comment WHERE comment_num = ${comment_num}`;
+
+      await MariaQuery(sql);
+      resolve();
+    } catch (error) {
+      console.log("DeleteComment 함수 에러", error);
+      reject("DeleteComment() 에러");
+    }
+  });
+};
+
 module.exports = {
   SelectComment,
   InsertComment,
   UpdateComment,
+  DeleteComment,
 };
