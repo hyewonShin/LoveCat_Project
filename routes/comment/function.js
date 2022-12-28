@@ -52,7 +52,30 @@ const InsertComment = (result) => {
   });
 };
 
+// 댓글 수정
+const UpdateComment = (body) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("UpdateComment() 진입 >>> ");
+      const { content, comment_num } = body;
+
+      let sql = `UPDATE comment 
+                  SET
+                 content = "${content}"
+                  WHERE
+                 comment_num = ${comment_num}`;
+
+      await MariaQuery(sql);
+      resolve();
+    } catch (error) {
+      console.log("UpdateComment 함수 에러", error);
+      reject("UpdateComment() 에러");
+    }
+  });
+};
+
 module.exports = {
   SelectComment,
   InsertComment,
+  UpdateComment,
 };

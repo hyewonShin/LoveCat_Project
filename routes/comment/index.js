@@ -6,7 +6,7 @@ const {
   CheckAdmin,
 } = require("../../middlewares/auth-middlewares");
 
-const { SelectComment, InsertComment } = require("./function");
+const { SelectComment, InsertComment, UpdateComment } = require("./function");
 
 // 댓글 조회
 router.get("/:board_num/:comment_num", async (req, res, next) => {
@@ -27,6 +27,19 @@ router.post("/", async (req, res, next) => {
 
   GetNickName(req.headers.authorization)
     .then((result) => InsertComment([result, req.body]))
+    .then((result) => {
+      res.status(200).json({ success: true, list: result });
+    })
+    .catch((error) =>
+      res.status(error).json({ success: false, message: error })
+    );
+});
+
+// 댓글 수정
+router.patch("/", async (req, res, next) => {
+  console.log("댓글수정API 진입 >> ", req.body);
+
+  UpdateComment(req.body)
     .then((result) => {
       res.status(200).json({ success: true, list: result });
     })
