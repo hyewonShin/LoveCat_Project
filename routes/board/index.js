@@ -15,6 +15,7 @@ const {
   ViewCount,
   SecretBoard,
   NoticeBoard,
+  SearchBoard,
 } = require("./function");
 
 // 전체글 조회
@@ -117,6 +118,19 @@ router.patch("/notice", async (req, res, next) => {
   console.log("공지설정API 진입 >> ", req.body);
 
   NoticeBoard(req.body.board_num)
+    .then((result) => {
+      res.status(200).json({ success: true, list: result });
+    })
+    .catch((error) =>
+      res.status(error).json({ success: false, message: error })
+    );
+});
+
+// 검색기능
+router.get("/search/:data", async (req, res, next) => {
+  console.log("검색API 진입 >> ", req.params);
+
+  SearchBoard(req.params)
     .then((result) => {
       res.status(200).json({ success: true, list: result });
     })

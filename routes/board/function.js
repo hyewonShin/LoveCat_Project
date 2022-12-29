@@ -191,6 +191,30 @@ const NoticeBoard = (board_num) => {
   });
 };
 
+// 게시판 검색기능
+const SearchBoard = (result) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      console.log("SearchBoard() 진입 >>> ", result);
+      const { data } = result;
+      let trimdata = data.trim();
+
+      let sql = `SELECT * FROM board
+                  WHERE
+                 content LIKE '%${trimdata}%'
+                  OR
+                 title LIKE '%${trimdata}%'`;
+
+      let rows = await MariaQuery(sql);
+      console.log("row >>", rows);
+      resolve(rows);
+    } catch (error) {
+      console.log("SearchBoard 함수 에러", error);
+      reject("SearchBoard() 에러");
+    }
+  });
+};
+
 module.exports = {
   SelectAll,
   SelectCategory,
@@ -201,4 +225,5 @@ module.exports = {
   DeleteBoard,
   SecretBoard,
   NoticeBoard,
+  SearchBoard,
 };
