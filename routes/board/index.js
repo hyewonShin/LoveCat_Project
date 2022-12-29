@@ -19,6 +19,8 @@ const {
 
 // 전체글 조회
 router.get("/", async (req, res, next) => {
+  console.log("전체글 조회 API 진입 >> ");
+
   SelectAll()
     .then((result) => {
       res.status(200).json({ success: true, list: result });
