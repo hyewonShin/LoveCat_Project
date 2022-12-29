@@ -1,4 +1,4 @@
-# LoveCat_Project
+# 😽 LoveCat_Project
 <h3>기획</h3> 
 - 자신의 고양이사진을 자랑할 수 있는 앨범게시판 <br/>
 - 커뮤니티에서 자유롭게 소통 <br/>
