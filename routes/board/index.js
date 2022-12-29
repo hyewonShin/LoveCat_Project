@@ -18,7 +18,7 @@ const {
 } = require("./function");
 
 // 전체글 조회
-router.get("/", async (req, res, next) => {
+router.get("/posts", async (req, res, next) => {
   console.log("전체글 조회 API 진입 >> ");
 
   SelectAll()
@@ -31,7 +31,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // 특정 카테고리 글 조회
-router.get("/:category", async (req, res, next) => {
+router.get("/posts/:category", async (req, res, next) => {
   console.log("특정 카테고리 글 조회 API 진입 >> ");
 
   SelectCategory(req.params.category)
@@ -44,7 +44,7 @@ router.get("/:category", async (req, res, next) => {
 });
 
 // 특정 카테고리 글 상세조회
-router.get("/:category/:board_num", async (req, res, next) => {
+router.get("/posts/:category/:board_num", async (req, res, next) => {
   console.log("특정 카테고리 글 상세조회 API 진입 >> ");
   let category = req.params.category;
   let board_num = req.params.board_num;
