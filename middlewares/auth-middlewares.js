@@ -141,7 +141,7 @@ const VerifyToken = (req, res, next) => {
       console.log("token >>  ", token);
       let accessToken = token.replace(/\bBearer \b/g, "");
 
-      // access토큰, refreshc토큰 검증
+      // access토큰, refresh토큰 검증
       const VaccessToken = CheckToken(accessToken);
       console.log("VaccessToken  >>  ", VaccessToken);
 
