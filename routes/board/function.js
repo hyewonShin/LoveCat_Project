@@ -7,7 +7,6 @@ const SelectAll = (page, page_size) => {
       console.log("SelectAll() 진입 >>> ", page, page_size);
       let offset = (parseInt(page) - 1) * page_size;
 
-      let data = [offset, page_size];
       let sql = `SELECT * FROM board 
                   WHERE delete_flag = 0 
                 ORDER BY create_date ASC 
@@ -73,9 +72,6 @@ const ViewCount = (board_num) => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log("ViewCount() 진입 >>> ");
-      // user_num : 우선 더미데이터 사용
-      let user_num = 1;
-      let data = [user_num, board_num];
 
       let sql = `UPDATE board SET 
                   view_cnt = view_cnt+1 
