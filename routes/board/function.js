@@ -1,13 +1,17 @@
 const MariaQuery = require("../../middlewares/mariaModule");
 
 // 전체글 조회
-const SelectAll = () => {
+const SelectAll = (page, page_size) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("SelectAll() 진입 >>> ");
+      console.log("SelectAll() 진입 >>> ", page, page_size);
+      let offset = (parseInt(page) - 1) * page_size;
 
+      let data = [offset, page_size];
       let sql = `SELECT * FROM board 
-                  WHERE delete_flag = 0`;
+                  WHERE delete_flag = 0 
+                ORDER BY create_date ASC 
+                 limit ${offset}, ${page_size}`;
 
       let rows = await MariaQuery(sql);
       console.log("rows", rows);
@@ -20,17 +24,19 @@ const SelectAll = () => {
 };
 
 // 특정 카테고리 글 조회
-const SelectCategory = (category) => {
+const SelectCategory = (category, page, page_size) => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log("SelectCategory() 진입 >>> ");
-      let data = [category];
+      let offset = (parseInt(page) - 1) * page_size;
 
       let sql = `SELECT * FROM board 
-                  WHERE category = ? 
-                 AND delete_flag = 0`;
+                  WHERE category = ${category} 
+                 AND delete_flag = 0 
+                  ORDER BY create_date ASC 
+                 limit ${offset}, ${page_size}`;
 
-      let rows = await MariaQuery(sql, data);
+      let rows = await MariaQuery(sql);
       console.log("rows", rows);
       resolve(rows);
     } catch (error) {

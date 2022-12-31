@@ -22,8 +22,8 @@ const {
 // 전체글 조회
 router.get("/posts", async (req, res, next) => {
   console.log("전체글 조회 API 진입 >> ");
-
-  SelectAll()
+  let { page, page_size } = req.query;
+  SelectAll(page, page_size)
     .then((result) => {
       res.status(200).json({ success: true, list: result });
     })
@@ -35,8 +35,8 @@ router.get("/posts", async (req, res, next) => {
 // 특정 카테고리 글 조회
 router.get("/posts/:category", async (req, res, next) => {
   console.log("특정 카테고리 글 조회 API 진입 >> ");
-
-  SelectCategory(req.params.category)
+  let { page, page_size } = req.query;
+  SelectCategory(req.params.category, page, page_size)
     .then((result) => {
       res.status(200).json({ success: true, list: result });
     })
@@ -62,7 +62,7 @@ router.get("/posts/:category/:board_num", async (req, res, next) => {
 });
 
 // 게시글 작성
-router.post("/", VerifyToken, upload.single("img"), async (req, res, next) => {
+router.post("/", VerifyToken, async (req, res, next) => {
   console.log("글작성API 진입 >> ", req.body);
 
   GetNickName(req.headers.authorization)
