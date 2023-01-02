@@ -11,6 +11,7 @@ var BoarderRouter = require("./routes/board/index");
 var LikeRouter = require("./routes/like/index");
 var BlackListRouter = require("./routes/blacklist/index");
 var CommentRouter = require("./routes/comment/index");
+var TeleAlarmRouter = require("./routes/tele_alarm/index");
 
 var app = express();
 const cors = require("cors");
@@ -38,6 +39,7 @@ app.use("/board", BoarderRouter);
 app.use("/like", LikeRouter);
 app.use("/blacklist", BlackListRouter);
 app.use("/comment", CommentRouter);
+app.use("/tele_alarm", TeleAlarmRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
