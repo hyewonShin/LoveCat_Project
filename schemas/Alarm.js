@@ -27,6 +27,9 @@ const Alarm = new Schema(
     time_stamp: {
       type: String,
     },
+    modify_time_stamp: {
+      type: String,
+    },
   },
   {
     versionKey: false,
