@@ -34,7 +34,58 @@ bot.onText(/\/hello (.+)/, async (msg, req) => {
     UserInfo_log.insertMany({
       chat_id,
       user_num,
-      timestamps: getTime(),
+      time_stamp: getTime(),
     });
   }
 });
+
+const SendMessage = (result) => {
+  return new Promise(async (resolve, reject) => {
+    console.log("SendMessage함수 진입 >> ");
+    console.log("result >> ", result);
+
+    let id = result.id;
+    let user_num = result.user_num;
+    let recent_title = result.title;
+    let days = result.days;
+    console.log("result.data >>> ", id, user_num, recent_title, days);
+
+    // chat_id 찾기
+    let ChatIddata = await Alarm_log.find({ user_num });
+    console.log("ChatIddata", ChatIddata);
+
+    if (ChatIddata.length) {
+      let chat_id = ChatIddata[0].chat_id;
+      console.log("chat_id", chat_id);
+
+      // 날짜 추출하여 가공
+      let week = ["0", "1", "2", "3", "4", "5", "6"];
+      let dayOfWeek = week[new Date(days).getDay()];
+      console.log("dayOfWeek", dayOfWeek);
+
+      let start = new Date(days);
+      console.log("START", start);
+
+      let hour = start.getHours();
+      let minute = start.getMinutes();
+      console.log("hour / minute >>> ", hour, minute);
+
+      schedule.scheduleJob(id, { hour, minute, dayOfWeek }, () => {
+        console.log("bot.sendMessage 알림보내기 확인");
+        console.log("schedule.scheduleJob", schedule.scheduledJobs);
+        bot.sendMessage(chat_id, (text = recent_title));
+      });
+    }
+    resolve();
+  });
+};
+
+const CancelSchedule = (id) => {
+  return new Promise(async (resolve, reject) => {
+    console.log("CancelSchedule함수 진입 >>", id);
+    schedule.cancelJob(id);
+    resolve();
+  });
+};
+
+module.exports = { SendMessage, CancelSchedule };
