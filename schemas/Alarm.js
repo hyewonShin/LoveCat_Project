@@ -24,6 +24,9 @@ const Alarm = new Schema(
     markAsRead: {
       type: String,
     },
+    time_stamp: {
+      type: String,
+    },
   },
   {
     versionKey: false,
@@ -43,7 +46,7 @@ const UserInfo = new Schema(
     chat_id: {
       type: String,
     },
-    timestamps: {
+    time_stamp: {
       type: String,
     },
   },
