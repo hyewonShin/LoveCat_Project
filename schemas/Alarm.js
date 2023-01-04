@@ -43,6 +43,9 @@ const UserInfo = new Schema(
     chat_id: {
       type: String,
     },
+    timestamps: {
+      type: String,
+    },
   },
   {
     versionKey: false,
